@@ -10,6 +10,9 @@ import com.mx.dev.blog.spring_001_blog.repositories.CategoryRepository;
 import com.mx.dev.blog.spring_001_blog.services.CategoryService;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryRequestDTO;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryResponseDTO;
+import com.mx.dev.blog.spring_001_blog.utils.enums.MethodEnum;
+import com.mx.dev.blog.spring_001_blog.utils.enums.ResponseStatus;
+import com.mx.dev.blog.spring_001_blog.utils.exceptions.CategoryException;
 import com.mx.dev.blog.spring_001_blog.utils.mappers.CategoryMappers;
 
 @Service
@@ -25,15 +28,23 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<CategoryEntity> getAllCategories() {
+	public List<CategoryResponseDTO> getAllCategories() {
 
-		return categoryRepository.findAll();
+		return CategoryMappers.toListCategoryResponseDTO(categoryRepository.findAll());
+	}
+
+	public CategoryEntity getCategoryByIdOrThrow(Long categoryId) throws CategoryException {
+
+		return categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryException("Category not found",
+				ResponseStatus.NOT_FOUND.getHttpStatusCode(), "/api/category", MethodEnum.GET));
 	}
 
 	@Override
-	public CategoryResponseDTO getOneCategory(Long categoryId) {
+	public CategoryResponseDTO getOneCategory(Long categoryId) throws CategoryException {
 
-		return CategoryMappers.fromCategoryEToCategoryEntity(categoryRepository.findById(categoryId).orElseThrow(null));
+		CategoryEntity categoryEntity = getCategoryByIdOrThrow(categoryId);
+
+		return CategoryMappers.fromCategoryEToCategoryEntity(categoryEntity);
 	}
 
 }
