@@ -5,10 +5,11 @@ import java.util.List;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryRequestDTO;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryResponseDTO;
 import com.mx.dev.blog.spring_001_blog.utils.exceptions.CategoryException;
+import com.mx.dev.blog.spring_001_blog.utils.exceptions.ServiceException;
 
 public interface CategoryService {
 
-	CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO) throws CategoryException;
+	CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO) throws ServiceException;
 
 	List<CategoryResponseDTO> getAllCategories();
 

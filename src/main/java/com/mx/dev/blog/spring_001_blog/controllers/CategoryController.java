@@ -7,15 +7,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mx.dev.blog.spring_001_blog.services.CategoryService;
+import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryRequestDTO;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryResponseDTO;
 import com.mx.dev.blog.spring_001_blog.utils.enums.MethodEnum;
 import com.mx.dev.blog.spring_001_blog.utils.enums.ResponseStatus;
 import com.mx.dev.blog.spring_001_blog.utils.exceptions.CategoryException;
+import com.mx.dev.blog.spring_001_blog.utils.exceptions.ServiceException;
 import com.mx.dev.blog.spring_001_blog.utils.response.ApiResponse;
+import com.mx.dev.blog.spring_001_blog.utils.validators.CategoryValidator;
 
 @RestController
 @RequestMapping("/api/category")
@@ -23,6 +28,8 @@ public class CategoryController {
 
 	@Autowired
 	private CategoryService categoryService;
+
+	private final CategoryValidator categoryValidator = new CategoryValidator();
 
 	@GetMapping
 	public ResponseEntity<?> getAllCategories() {
@@ -47,4 +54,15 @@ public class CategoryController {
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}
 
+	@PostMapping
+	public ResponseEntity<?> saveCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) throws ServiceException {
+		categoryValidator.validate(categoryRequestDTO);
+
+		CategoryResponseDTO categoryResponseDTO = categoryService.createCategory(categoryRequestDTO);
+
+		ApiResponse<CategoryResponseDTO> apiResponse = new ApiResponse<>(ResponseStatus.SUCCESS.getHttpStatusCode(),
+				"/api/category", MethodEnum.POST, "Success method POST", categoryResponseDTO, false);
+
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+	}
 }

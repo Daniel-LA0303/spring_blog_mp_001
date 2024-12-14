@@ -1,6 +1,7 @@
 package com.mx.dev.blog.spring_001_blog.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryResponseDTO;
 import com.mx.dev.blog.spring_001_blog.utils.enums.MethodEnum;
 import com.mx.dev.blog.spring_001_blog.utils.enums.ResponseStatus;
 import com.mx.dev.blog.spring_001_blog.utils.exceptions.CategoryException;
+import com.mx.dev.blog.spring_001_blog.utils.exceptions.ServiceException;
 import com.mx.dev.blog.spring_001_blog.utils.mappers.CategoryMappers;
 
 @Service
@@ -22,9 +24,18 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryRepository categoryRepository;
 
 	@Override
-	public CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO) {
+	public CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO) throws ServiceException {
 
-		return null;
+		Optional<CategoryEntity> categoryO = categoryRepository.findCategoryByName(categoryRequestDTO.getName());
+		if (categoryO.isPresent()) {
+			throw new ServiceException("Category is already exists.", ResponseStatus.BAD_REQUEST.getHttpStatusCode(),
+					"/api/category", MethodEnum.POST);
+		}
+
+		CategoryEntity categoryEntity = categoryRepository.save(CategoryMappers.toCategoryEntity(categoryRequestDTO));
+
+		return CategoryMappers.fromCategoryEToCategoryEntity(categoryEntity);
+
 	}
 
 	@Override

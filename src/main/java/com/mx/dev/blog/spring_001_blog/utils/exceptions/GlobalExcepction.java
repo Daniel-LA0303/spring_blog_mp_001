@@ -33,6 +33,20 @@ public class GlobalExcepction {
 
 	@ExceptionHandler(CategoryException.class)
 	public ResponseEntity<?> handleCategoryException(CategoryException ex) {
+		ApiResponse<Map<String, String>> response = new ApiResponse<>(ex.getStatus(), ex.getPath(), ex.getMethod(),
+				ex.getMessage(), ex.getValidationErrors(), true);
+
+		return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getStatus()));
+	}
+
+	/**
+	 * catch ServiceException
+	 * 
+	 * @param ex
+	 * @return
+	 */
+	@ExceptionHandler(ServiceException.class)
+	public ResponseEntity<?> handleInventoryException(ServiceException ex) {
 
 		ApiResponse<Map<String, String>> response = new ApiResponse<>(ex.getStatus(), ex.getPath(), ex.getMethod(),
 				ex.getMessage(), ex.getValidationErrors(), true);
