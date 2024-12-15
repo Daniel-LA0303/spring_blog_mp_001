@@ -1,5 +1,6 @@
 package com.mx.dev.blog.spring_001_blog.services.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,16 +14,24 @@ import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryRequestDTO;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryResponseDTO;
 import com.mx.dev.blog.spring_001_blog.utils.enums.MethodEnum;
 import com.mx.dev.blog.spring_001_blog.utils.enums.ResponseStatus;
-import com.mx.dev.blog.spring_001_blog.utils.exceptions.CategoryException;
 import com.mx.dev.blog.spring_001_blog.utils.exceptions.ServiceException;
 import com.mx.dev.blog.spring_001_blog.utils.mappers.CategoryMappers;
 
+/**
+ * category services
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+	/**
+	 * repository
+	 */
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+	/**
+	 * create a new category
+	 */
 	@Override
 	public CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequestDTO) throws ServiceException {
 
@@ -38,24 +47,66 @@ public class CategoryServiceImpl implements CategoryService {
 
 	}
 
+	/**
+	 * get all categories
+	 */
 	@Override
 	public List<CategoryResponseDTO> getAllCategories() {
 
 		return CategoryMappers.toListCategoryResponseDTO(categoryRepository.findAll());
 	}
 
-	public CategoryEntity getCategoryByIdOrThrow(Long categoryId) throws CategoryException {
+	/**
+	 * get category by id, if category doesn't exists we catch in a exception
+	 * 
+	 * @param categoryId
+	 * @return
+	 * @throws ServiceException
+	 */
+	public CategoryEntity getCategoryByIdOrThrow(Long categoryId) throws ServiceException {
 
-		return categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryException("Category not found",
+		return categoryRepository.findById(categoryId).orElseThrow(() -> new ServiceException("Category not found",
 				ResponseStatus.NOT_FOUND.getHttpStatusCode(), "/api/category", MethodEnum.GET));
 	}
 
+	/**
+	 * get one category
+	 */
 	@Override
-	public CategoryResponseDTO getOneCategory(Long categoryId) throws CategoryException {
+	public CategoryResponseDTO getOneCategory(Long categoryId) throws ServiceException {
 
 		CategoryEntity categoryEntity = getCategoryByIdOrThrow(categoryId);
-
 		return CategoryMappers.fromCategoryEToCategoryEntity(categoryEntity);
+	}
+
+	/**
+	 * update a category
+	 */
+	@Override
+	public CategoryResponseDTO updateCategroy(CategoryRequestDTO categoryRequestDTO, Long categoryId)
+			throws ServiceException {
+
+		// 1. first we check if category exists
+		CategoryEntity existingCategory = getCategoryByIdOrThrow(categoryId);
+
+		// 2. check if there were changes in name
+		if (!existingCategory.getName().equals(categoryRequestDTO.getName())) {
+			Optional<CategoryEntity> categoryByName = categoryRepository
+					.findCategoryByName(categoryRequestDTO.getName());
+			if (categoryByName.isPresent()) {
+				throw new ServiceException("Category name is already in use.",
+						ResponseStatus.BAD_REQUEST.getHttpStatusCode(), "/api/category", MethodEnum.PUT);
+			}
+		}
+
+		existingCategory.setName(categoryRequestDTO.getName());
+		existingCategory.setDescription(categoryRequestDTO.getDescription());
+		existingCategory.setColor(categoryRequestDTO.getColor());
+		existingCategory.setUpdatedAt(LocalDateTime.now());
+
+		CategoryEntity updatedCategory = categoryRepository.save(existingCategory);
+
+		return CategoryMappers.fromCategoryEToCategoryEntity(updatedCategory);
 	}
 
 }
