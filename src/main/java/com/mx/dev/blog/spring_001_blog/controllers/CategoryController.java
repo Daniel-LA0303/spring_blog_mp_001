@@ -88,7 +88,7 @@ public class CategoryController {
 		ApiResponse<CategoryResponseDTO> apiResponse = new ApiResponse<>(ResponseStatus.CREATED.getHttpStatusCode(),
 				"/api/category", MethodEnum.POST, "Success method POST", categoryResponseDTO, false);
 
-		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+		return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class CategoryController {
 
 		CategoryResponseDTO categoryResponseDTO = categoryService.updateCategroy(categoryRequestDTO, categoryId);
 
-		ApiResponse<CategoryResponseDTO> apiResponse = new ApiResponse<>(ResponseStatus.CREATED.getHttpStatusCode(),
+		ApiResponse<CategoryResponseDTO> apiResponse = new ApiResponse<>(ResponseStatus.SUCCESS.getHttpStatusCode(),
 				"/api/category", MethodEnum.POST, "Success method POST", categoryResponseDTO, false);
 
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
