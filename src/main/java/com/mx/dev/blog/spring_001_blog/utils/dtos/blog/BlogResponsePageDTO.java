@@ -3,7 +3,7 @@ package com.mx.dev.blog.spring_001_blog.utils.dtos.blog;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mx.dev.blog.spring_001_blog.utils.dtos.UserInfoDTO;
+import com.mx.dev.blog.spring_001_blog.utils.dtos.user.UserInfoDTO;
 import com.mx.dev.blog.spring_001_blog.utils.enums.BlogStatusEnum;
 
 public class BlogResponsePageDTO {

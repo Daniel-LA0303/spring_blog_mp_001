@@ -3,6 +3,7 @@ package com.mx.dev.blog.spring_001_blog.services.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,32 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	/**
-	 * get one category
+	 * <<<<<<< HEAD ======= get a list of category by id
+	 */
+	@Override
+	public List<CategoryResponseDTO> getListCategories(List<Long> ids) throws ServiceException {
+
+		// 1. get categories
+		List<CategoryEntity> categoryResponseDTOs = categoryRepository.findListCategories(ids);
+
+		// 2. extract ids
+		List<Long> foundIds = categoryResponseDTOs.stream().map(CategoryEntity::getCategoryId)
+				.collect(Collectors.toList());
+
+		// 3. ids not found
+		List<Long> missingIds = ids.stream().filter(id -> !foundIds.contains(id)).collect(Collectors.toList());
+
+		// 4. exception to categories not found
+		if (!missingIds.isEmpty()) {
+			throw new ServiceException("The following categories were not found: " + missingIds,
+					ResponseStatus.BAD_REQUEST.getHttpStatusCode(), "/api/category", MethodEnum.POST);
+		}
+
+		return CategoryMappers.toListCategoryResponseDTO(categoryResponseDTOs);
+	}
+
+	/**
+	 * >>>>>>> feature/LAZD-service-category get one category
 	 */
 	@Override
 	public CategoryResponseDTO getOneCategory(Long categoryId) throws ServiceException {

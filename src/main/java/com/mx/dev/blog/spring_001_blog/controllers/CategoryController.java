@@ -55,6 +55,29 @@ public class CategoryController {
 	}
 
 	/**
+<<<<<<< HEAD
+=======
+	 * 
+	 * @param ids
+	 * @return
+	 * @throws ServiceException
+	 */
+	@PostMapping("/get-categories-by-id")
+	public ResponseEntity<?> getCategoriesById(@RequestBody List<Long> ids) throws ServiceException {
+
+		List<CategoryResponseDTO> categories = categoryService.getListCategories(ids);
+
+		System.out.println(categories.size());
+
+		ApiResponse<List<CategoryResponseDTO>> apiResponse = new ApiResponse<>(
+				ResponseStatus.SUCCESS.getHttpStatusCode(), "/api/category", MethodEnum.POST, "Success method POST",
+				categories, false);
+
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+	}
+
+	/**
+>>>>>>> feature/LAZD-service-category
 	 * get a category by id
 	 * 
 	 * @param categoryId
