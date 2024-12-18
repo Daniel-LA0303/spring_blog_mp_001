@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserInfoDTO getOneUserWithInfo(Long id) throws SecurityException {
 
-		return userRepository.findUserInfoDTO(id);
+		return null;
 	}
 
 }
