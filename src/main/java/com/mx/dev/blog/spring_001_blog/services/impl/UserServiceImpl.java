@@ -9,7 +9,12 @@ import com.mx.dev.blog.spring_001_blog.entities.user.UserEntity;
 import com.mx.dev.blog.spring_001_blog.repositories.UserInfoRepository;
 import com.mx.dev.blog.spring_001_blog.repositories.UserRepository;
 import com.mx.dev.blog.spring_001_blog.services.UserService;
-import com.mx.dev.blog.spring_001_blog.utils.dtos.UserInfoDTO;
+import com.mx.dev.blog.spring_001_blog.utils.dtos.user.UserInfoDTO;
+import com.mx.dev.blog.spring_001_blog.utils.dtos.user.UserSimpleResponseDTO;
+import com.mx.dev.blog.spring_001_blog.utils.enums.MethodEnum;
+import com.mx.dev.blog.spring_001_blog.utils.enums.ResponseStatus;
+import com.mx.dev.blog.spring_001_blog.utils.exceptions.ServiceException;
+import com.mx.dev.blog.spring_001_blog.utils.mappers.UserMappers;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,13 +26,24 @@ public class UserServiceImpl implements UserService {
 	private UserInfoRepository userInfoRepository;
 
 	@Override
-	public List<UserEntity> getAllUsers() {
+	public List<UserSimpleResponseDTO> getAllUsers() {
 
-		return userRepository.findAll();
+		return UserMappers.toListUserSimpleResponseDTO(userRepository.findAll());
+	}
+
+	public UserEntity getOneUserOrThrow(Long id) throws ServiceException {
+		return userRepository.findById(id).orElseThrow(() -> new ServiceException("User with ID " + id + " not found.",
+				ResponseStatus.NOT_FOUND.getHttpStatusCode(), "/api/users", MethodEnum.GET));
 	}
 
 	@Override
-	public UserInfoDTO getOneUser(Long id) {
+	public UserSimpleResponseDTO getOneUserSimpleInfo(Long id) throws ServiceException {
+
+		return UserMappers.toUserSimpleResponseDTO(getOneUserOrThrow(id));
+	}
+
+	@Override
+	public UserInfoDTO getOneUserWithInfo(Long id) throws SecurityException {
 
 		return userRepository.findUserInfoDTO(id);
 	}

@@ -1,8 +1,8 @@
-package com.mx.dev.blog.spring_001_blog.utils.dtos;
+package com.mx.dev.blog.spring_001_blog.utils.dtos.user;
 
 import java.time.LocalDateTime;
 
-public class UserDTO {
+public class UserSimpleResponseDTO {
 
 	/**
 	 * user id
@@ -20,29 +20,14 @@ public class UserDTO {
 	private String email;
 
 	/**
-	 * password
-	 */
-	private String password;
-
-	/**
-	 * user details
-	 */
-	private UserDetailsDTO userDetailsDTO;
-
-	/**
 	 * created at
 	 */
 	private LocalDateTime createdAt;
 
 	/**
-	 * updated at
-	 */
-	private LocalDateTime updatedAt;
-
-	/**
 	 * 
 	 */
-	public UserDTO() {
+	public UserSimpleResponseDTO() {
 	}
 
 	/**
@@ -54,15 +39,10 @@ public class UserDTO {
 	 * @param createdAt
 	 * @param updatedAt
 	 */
-	public UserDTO(Long userId, String username, String email, String password, UserDetailsDTO userDetailsDTO,
-			LocalDateTime createdAt, LocalDateTime updatedAt) {
+	public UserSimpleResponseDTO(Long userId, String username, String email, LocalDateTime createdAt) {
 		this.userId = userId;
-		this.username = username;
 		this.email = email;
-		this.password = password;
-		this.userDetailsDTO = userDetailsDTO;
 		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
 	}
 
 	/**
@@ -81,33 +61,6 @@ public class UserDTO {
 	 */
 	public String getEmail() {
 		return email;
-	}
-
-	/**
-	 * return the value of the property password
-	 *
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * return the value of the property updatedAt
-	 *
-	 * @return the updatedAt
-	 */
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	/**
-	 * return the value of the property userDetailsDTO
-	 *
-	 * @return the userDetailsDTO
-	 */
-	public UserDetailsDTO getUserDetailsDTO() {
-		return userDetailsDTO;
 	}
 
 	/**
@@ -144,33 +97,6 @@ public class UserDTO {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	/**
-	 * set the value of the property password
-	 *
-	 * @param password the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * set the value of the property updatedAt
-	 *
-	 * @param updatedAt the updatedAt to set
-	 */
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	/**
-	 * set the value of the property userDetailsDTO
-	 *
-	 * @param userDetailsDTO the userDetailsDTO to set
-	 */
-	public void setUserDetailsDTO(UserDetailsDTO userDetailsDTO) {
-		this.userDetailsDTO = userDetailsDTO;
 	}
 
 	/**
