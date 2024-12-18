@@ -12,6 +12,8 @@ public interface CategoryService {
 
 	List<CategoryResponseDTO> getAllCategories();
 
+	List<CategoryResponseDTO> getListCategories(List<Long> ids) throws ServiceException;
+
 	CategoryResponseDTO getOneCategory(Long categoryId) throws ServiceException;
 
 	CategoryResponseDTO updateCategroy(CategoryRequestDTO categoryRequestDTO, Long categoryId) throws ServiceException;
