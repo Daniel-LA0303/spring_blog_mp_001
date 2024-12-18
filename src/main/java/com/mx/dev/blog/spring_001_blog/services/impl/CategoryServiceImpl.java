@@ -74,14 +74,13 @@ public class CategoryServiceImpl implements CategoryService {
 	 * get a list of category by id
 	 */
 	@Override
-	public List<CategoryResponseDTO> getListCategories(List<Long> ids) throws ServiceException {
+	public List<CategoryEntity> getListCategories(List<Long> ids) throws ServiceException {
 
 		// 1. get categories
-		List<CategoryEntity> categoryResponseDTOs = categoryRepository.findListCategories(ids);
+		List<CategoryEntity> categoryIDS = categoryRepository.findListCategories(ids);
 
 		// 2. extract ids
-		List<Long> foundIds = categoryResponseDTOs.stream().map(CategoryEntity::getCategoryId)
-				.collect(Collectors.toList());
+		List<Long> foundIds = categoryIDS.stream().map(CategoryEntity::getCategoryId).collect(Collectors.toList());
 
 		// 3. ids not found
 		List<Long> missingIds = ids.stream().filter(id -> !foundIds.contains(id)).collect(Collectors.toList());
@@ -92,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
 					ResponseStatus.BAD_REQUEST.getHttpStatusCode(), "/api/category", MethodEnum.POST);
 		}
 
-		return CategoryMappers.toListCategoryResponseDTO(categoryResponseDTOs);
+		return categoryIDS;
 	}
 
 	/**

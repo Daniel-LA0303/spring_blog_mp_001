@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mx.dev.blog.spring_001_blog.entities.ctaegory.CategoryEntity;
 import com.mx.dev.blog.spring_001_blog.services.CategoryService;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryRequestDTO;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.category.CategoryResponseDTO;
@@ -63,13 +64,12 @@ public class CategoryController {
 	@PostMapping("/get-categories-by-id")
 	public ResponseEntity<?> getCategoriesById(@RequestBody List<Long> ids) throws ServiceException {
 
-		List<CategoryResponseDTO> categories = categoryService.getListCategories(ids);
+		List<CategoryEntity> categories = categoryService.getListCategories(ids);
 
 		System.out.println(categories.size());
 
-		ApiResponse<List<CategoryResponseDTO>> apiResponse = new ApiResponse<>(
-				ResponseStatus.SUCCESS.getHttpStatusCode(), "/api/category", MethodEnum.POST, "Success method POST",
-				categories, false);
+		ApiResponse<List<CategoryEntity>> apiResponse = new ApiResponse<>(ResponseStatus.SUCCESS.getHttpStatusCode(),
+				"/api/category", MethodEnum.POST, "Success method POST", categories, false);
 
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}
