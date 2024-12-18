@@ -1,6 +1,7 @@
 package com.mx.dev.blog.spring_001_blog.entities.blog;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +10,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.mx.dev.blog.spring_001_blog.entities.ctaegory.CategoryEntity;
 import com.mx.dev.blog.spring_001_blog.utils.enums.BlogStatusEnum;
 
 @Entity
@@ -73,6 +78,13 @@ public class BlogEntity {
 	@Column(name = "user_id")
 	private Long userId;
 
+	@ManyToMany
+	@JoinTable(name = "blog_category_tbl", // Nombre de la tabla intermedia
+			joinColumns = @JoinColumn(name = "blog_id"), // Llave foránea de BlogEntity
+			inverseJoinColumns = @JoinColumn(name = "category_id") // Llave foránea de CategoryEntity
+	)
+	private List<CategoryEntity> categories;
+
 	public BlogEntity() {
 
 	}
@@ -102,12 +114,47 @@ public class BlogEntity {
 	}
 
 	/**
+	 * @param blogId
+	 * @param title
+	 * @param description
+	 * @param content
+	 * @param status
+	 * @param slug
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param userId
+	 * @param categories
+	 */
+	public BlogEntity(Long blogId, String title, String description, String content, BlogStatusEnum status, String slug,
+			LocalDateTime createdAt, LocalDateTime updatedAt, Long userId, List<CategoryEntity> categories) {
+		this.blogId = blogId;
+		this.title = title;
+		this.description = description;
+		this.content = content;
+		this.status = status;
+		this.slug = slug;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.userId = userId;
+		this.categories = categories;
+	}
+
+	/**
 	 * return the value of the property blogId
 	 *
 	 * @return the blogId
 	 */
 	public Long getBlogId() {
 		return blogId;
+	}
+
+	/**
+	 * return the value of the property categories
+	 *
+	 * @return the categories
+	 */
+	public List<CategoryEntity> getCategories() {
+		return categories;
 	}
 
 	/**
@@ -189,6 +236,15 @@ public class BlogEntity {
 	 */
 	public void setBlogId(Long blogId) {
 		this.blogId = blogId;
+	}
+
+	/**
+	 * set the value of the property categories
+	 *
+	 * @param categories the categories to set
+	 */
+	public void setCategories(List<CategoryEntity> categories) {
+		this.categories = categories;
 	}
 
 	/**

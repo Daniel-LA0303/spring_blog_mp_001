@@ -10,9 +10,13 @@ import com.mx.dev.blog.spring_001_blog.entities.blog.BlogEntity;
 import com.mx.dev.blog.spring_001_blog.repositories.BlogRepository;
 import com.mx.dev.blog.spring_001_blog.repositories.UserRepository;
 import com.mx.dev.blog.spring_001_blog.services.BlogService;
+import com.mx.dev.blog.spring_001_blog.services.CategoryService;
+import com.mx.dev.blog.spring_001_blog.services.UserService;
+import com.mx.dev.blog.spring_001_blog.utils.dtos.blog.BlogCreateRequestDTO;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.blog.BlogResponseDTO;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.blog.BlogResponsePageDTO;
 import com.mx.dev.blog.spring_001_blog.utils.dtos.user.UserInfoDTO;
+import com.mx.dev.blog.spring_001_blog.utils.dtos.user.UserSimpleResponseDTO;
 import com.mx.dev.blog.spring_001_blog.utils.enums.MethodEnum;
 import com.mx.dev.blog.spring_001_blog.utils.enums.ResponseStatus;
 import com.mx.dev.blog.spring_001_blog.utils.exceptions.ServiceException;
@@ -26,6 +30,28 @@ public class BlogServiceImpl implements BlogService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private CategoryService categoryService;
+
+	@Override
+	public BlogResponseDTO createBlog(BlogCreateRequestDTO blogCreateRequestDTO) throws ServiceException {
+
+		// 1. first check if user exists
+		UserSimpleResponseDTO user = userService.getOneUserSimpleInfo(blogCreateRequestDTO.getUserId());
+
+		// 2. check if categoris exists
+		categoryService.getListCategories(blogCreateRequestDTO.getCategories());
+
+		// Blog
+
+		// 3. create a unique slug
+
+		return null;
+	}
 
 	@Override
 	public List<BlogResponseDTO> getAllBlogs() {

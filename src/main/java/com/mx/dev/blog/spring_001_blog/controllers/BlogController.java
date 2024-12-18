@@ -31,7 +31,7 @@ public class BlogController {
 	 * @return
 	 */
 	@GetMapping
-	public ResponseEntity<?> getAllCategories() {
+	public ResponseEntity<?> getAllBlogs() {
 
 		List<BlogResponseDTO> blogs = blogService.getAllBlogs();
 
@@ -42,7 +42,7 @@ public class BlogController {
 	}
 
 	@GetMapping("/{blogId}")
-	public ResponseEntity<?> getOneCategory(@PathVariable Long blogId) throws ServiceException {
+	public ResponseEntity<?> getOneBlog(@PathVariable Long blogId) throws ServiceException {
 
 		BlogResponsePageDTO blogResponsePageDTO = blogService.getOneBlog(blogId);
 
