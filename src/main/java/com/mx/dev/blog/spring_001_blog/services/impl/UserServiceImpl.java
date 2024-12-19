@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
 		return UserMappers.toListUserSimpleResponseDTO(userRepository.findAll());
 	}
 
+	@Override
 	public UserEntity getOneUserOrThrow(Long id) throws ServiceException {
 		return userRepository.findById(id).orElseThrow(() -> new ServiceException("User with ID " + id + " not found.",
 				ResponseStatus.NOT_FOUND.getHttpStatusCode(), "/api/users", MethodEnum.GET));

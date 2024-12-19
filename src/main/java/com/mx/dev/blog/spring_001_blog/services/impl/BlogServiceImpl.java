@@ -151,6 +151,7 @@ public class BlogServiceImpl implements BlogService {
 	 * get blog by id, if blog doesn't exists we catch in a exception
 	 * 
 	 */
+	@Override
 	public BlogEntity getBlogByIdOrThrow(Long blogId) throws ServiceException {
 
 		return blogRepository.findById(blogId).orElseThrow(() -> new ServiceException("Blog not found",

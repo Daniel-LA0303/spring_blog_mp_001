@@ -16,6 +16,8 @@ public interface BlogService {
 
 	List<BlogResponseDTO> getAllBlogs();
 
+	BlogEntity getBlogByIdOrThrow(Long blogId) throws ServiceException;
+
 	BlogResponsePageDTO getOneBlog(Long blogId) throws ServiceException;
 
 	BlogEntity updateBlog(BlogCreateRequestDTO blogCreateRequestDTO, Long blogId) throws ServiceException;
