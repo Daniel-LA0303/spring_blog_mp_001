@@ -1,14 +1,18 @@
 package com.mx.dev.blog.spring_001_blog.services.impl;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mx.dev.blog.spring_001_blog.entities.user.RoleEntity;
 import com.mx.dev.blog.spring_001_blog.entities.user.UserEntity;
 import com.mx.dev.blog.spring_001_blog.entities.user.UserInfoEntity;
+import com.mx.dev.blog.spring_001_blog.repositories.RoleRepository;
 import com.mx.dev.blog.spring_001_blog.repositories.UserInfoRepository;
 import com.mx.dev.blog.spring_001_blog.repositories.UserRepository;
 import com.mx.dev.blog.spring_001_blog.services.UserService;
@@ -29,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserInfoRepository userInfoRepository;
+
+	@Autowired
+	private RoleRepository roleRepository;
 
 	@Override
 	@Transactional
@@ -55,6 +62,10 @@ public class UserServiceImpl implements UserService {
 		userEntity.setPassword(userCreateRequestDTO.getPassword());
 		userEntity.setCreatedAt(LocalDateTime.now());
 		userEntity.setUpdatedAt(LocalDateTime.now());
+
+		// we asigned role
+		Optional<RoleEntity> roleEntity = roleRepository.findRoleByName("ROLE_USER");
+		userEntity.setRoles(Collections.singleton(roleEntity.get()));
 
 		// 4. Save UserEntity and get generated userId
 		UserEntity savedUser = userRepository.save(userEntity);

@@ -1,12 +1,19 @@
 package com.mx.dev.blog.spring_001_blog.entities.user;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -50,6 +57,10 @@ public class UserEntity {
 	@Column(name = "update_at")
 	private LocalDateTime updatedAt;
 
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "user_role_tbl", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<RoleEntity> roles = new HashSet<>();
+
 	/**
 	 * 
 	 */
@@ -63,15 +74,17 @@ public class UserEntity {
 	 * @param password
 	 * @param createdAt
 	 * @param updatedAt
+	 * @param roles
 	 */
 	public UserEntity(Long userId, String username, String email, String password, LocalDateTime createdAt,
-			LocalDateTime updatedAt) {
+			LocalDateTime updatedAt, Set<RoleEntity> roles) {
 		this.userId = userId;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.roles = roles;
 	}
 
 	/**
@@ -99,6 +112,15 @@ public class UserEntity {
 	 */
 	public String getPassword() {
 		return password;
+	}
+
+	/**
+	 * return the value of the property roles
+	 *
+	 * @return the roles
+	 */
+	public Set<RoleEntity> getRoles() {
+		return roles;
 	}
 
 	/**
@@ -153,6 +175,15 @@ public class UserEntity {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	/**
+	 * set the value of the property roles
+	 *
+	 * @param roles the roles to set
+	 */
+	public void setRoles(Set<RoleEntity> roles) {
+		this.roles = roles;
 	}
 
 	/**
