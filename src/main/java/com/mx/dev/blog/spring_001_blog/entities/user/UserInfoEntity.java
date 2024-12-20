@@ -1,61 +1,69 @@
-package com.mx.dev.blog.spring_001_blog.utils.dtos;
+package com.mx.dev.blog.spring_001_blog.entities.user;
 
 import java.time.LocalDateTime;
 
-public class UserDetailsDTO {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-	/**
-	 * profile picture
-	 */
+@Entity
+@Table(name = "user_info_tbl")
+public class UserInfoEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long userInfoId;
+
+	@Column(name = "profile_picture")
 	private String profilePicture;
 
-	/**
-	 * bio
-	 */
+	@Column(name = "bio")
 	private String bio;
 
-	/**
-	 * last login
-	 */
+	@Column(name = "last_login")
 	private LocalDateTime lastLogin;
 
-	/**
-	 * is active
-	 */
+	@Column(name = "is_active")
 	private Boolean isActive;
 
-	/**
-	 * phone
-	 */
+	@Column(name = "phone")
 	private String phone;
 
-	/**
-	 * direction
-	 */
+	@Column(name = "direction")
 	private String direction;
+
+	@Column(name = "user_id")
+	private Long userId;
 
 	/**
 	 * 
 	 */
-	public UserDetailsDTO() {
+	public UserInfoEntity() {
 	}
 
 	/**
+	 * @param userInfoId
 	 * @param profilePicture
 	 * @param bio
 	 * @param lastLogin
 	 * @param isActive
 	 * @param phone
 	 * @param direction
+	 * @param userId
 	 */
-	public UserDetailsDTO(String profilePicture, String bio, LocalDateTime lastLogin, Boolean isActive, String phone,
-			String direction) {
+	public UserInfoEntity(Long userInfoId, String profilePicture, String bio, LocalDateTime lastLogin, Boolean isActive,
+			String phone, String direction, Long userId) {
+		this.userInfoId = userInfoId;
 		this.profilePicture = profilePicture;
 		this.bio = bio;
 		this.lastLogin = lastLogin;
 		this.isActive = isActive;
 		this.phone = phone;
 		this.direction = direction;
+		this.userId = userId;
 	}
 
 	/**
@@ -113,6 +121,24 @@ public class UserDetailsDTO {
 	}
 
 	/**
+	 * return the value of the property userId
+	 *
+	 * @return the userId
+	 */
+	public Long getUserId() {
+		return userId;
+	}
+
+	/**
+	 * return the value of the property userInfoId
+	 *
+	 * @return the userInfoId
+	 */
+	public Long getUserInfoId() {
+		return userInfoId;
+	}
+
+	/**
 	 * set the value of the property bio
 	 *
 	 * @param bio the bio to set
@@ -164,6 +190,24 @@ public class UserDetailsDTO {
 	 */
 	public void setProfilePicture(String profilePicture) {
 		this.profilePicture = profilePicture;
+	}
+
+	/**
+	 * set the value of the property userId
+	 *
+	 * @param userId the userId to set
+	 */
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	/**
+	 * set the value of the property userInfoId
+	 *
+	 * @param userInfoId the userInfoId to set
+	 */
+	public void setUserInfoId(Long userInfoId) {
+		this.userInfoId = userInfoId;
 	}
 
 }
